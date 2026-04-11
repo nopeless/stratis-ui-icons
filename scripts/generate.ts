@@ -18,10 +18,9 @@ const sourceMap = new Map<string, string>();
 
 function normalizeSvgColor(svgText: string): string {
   // Some upstream icons hardcode black, which breaks dark-mode previews.
-  return svgText.replace(
-    /\b(fill|stroke)\s*=\s*(['"])\s*(#000000|#000|black)\s*\2/gi,
-    '$1="currentColor"',
-  );
+  return svgText
+    .replace('fill="currentColor"', 'fill="none"')
+    .replace(/\b(fill|stroke)\s*=\s*(['"])\s*(#000000|#000|black)\s*\2/gi, '$1="currentColor"');
 }
 
 async function generateIcons(): Promise<number> {
