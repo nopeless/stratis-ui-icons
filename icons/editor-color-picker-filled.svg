@@ -1,5 +1,1 @@
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="color-picker">
-<path id="Icon" d="M10.4735 6.60748L17.3933 13.5273M2.40039 16.9872L16.0318 3.35582C17.3057 2.08192 19.3711 2.08191 20.645 3.35581C21.9189 4.62971 21.9189 6.69512 20.645 7.96902L7.01359 21.6004H2.40039V16.9872Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m10.474 6.607 6.92 6.92M2.4 16.987 16.032 3.356a3.262 3.262 0 1 1 4.613 4.613L7.014 21.6H2.4z"/></svg>

@@ -1,5 +1,1 @@
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="underline-01">
-<path id="Icon" d="M20 20H4M17.7143 5.14286V10.8571C17.7143 14.0131 15.1559 16.5714 12 16.5714C8.84409 16.5714 6.28571 14.0131 6.28571 10.8571V5.14286M4.57143 4H8M16 4L19.4286 4" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 20H4M17.714 5.143v5.714a5.714 5.714 0 1 1-11.428 0V5.143M4.57 4H8m8 0h3.429"/></svg>

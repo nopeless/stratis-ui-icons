@@ -1,5 +1,1 @@
-<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="perspective">
-<path id="Icon" d="M12.2504 3.60894V20.401M2.65039 12.0049H21.8504M19.2104 21.6004L4.81039 19.8012C3.61039 19.6813 2.65039 18.7218 2.65039 17.5223V6.48757C2.65039 5.28814 3.61039 4.3286 4.81039 4.20865L19.2104 2.40951C20.6504 2.28957 21.8504 3.36905 21.8504 4.68843V19.2015C21.8504 20.6408 20.5304 21.7203 19.2104 21.4804V21.6004Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" fill="none" viewBox="0 0 25 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.25 3.609V20.4m-9.6-8.396h19.2M19.21 21.6l-14.4-1.799c-1.2-.12-2.16-1.08-2.16-2.279V6.488c0-1.2.96-2.16 2.16-2.28l14.4-1.798c1.44-.12 2.64.959 2.64 2.278v14.514c0 1.439-1.32 2.518-2.64 2.278z"/></svg>
