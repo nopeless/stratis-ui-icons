@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Icon Search</title>
+    <style>
+      :root {
+        --bg: #ffffff;
+        --text: #111111;
+        --border: #7774;
+        --border-strong: #9998;
+        --input-bg: #ffffff;
+        --card-bg: #ffffff;
+        --hover-bg: #f3f6ff;
+        --hover-border: #6f8dff;
+      }
+      body[data-theme="dark"] {
+        --bg: #0f1115;
+        --text: #f3f5f8;
+        --border: #ffffff2a;
+        --border-strong: #ffffff4a;
+        --input-bg: #191c23;
+        --card-bg: #171a21;
+        --hover-bg: #25314f;
+        --hover-border: #8da6ff;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          Helvetica,
+          Arial,
+          sans-serif;
+      }
+      .wrap {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 16px;
+      }
+      h1 {
+        margin: 0 0 12px;
+        font-size: 20px;
+      }
+      input[type="search"] {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid var(--border-strong);
+        background: var(--input-bg);
+        color: var(--text);
+        font-size: 14px;
+      }
+      .toolbar {
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .mode-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .mode-row label {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+      }
+      .meta {
+        margin: 10px 0 14px;
+        font-size: 13px;
+        opacity: 0.8;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 10px;
+      }
+      .item {
+        appearance: none;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        cursor: pointer;
+        background: var(--card-bg);
+        color: inherit;
+        text-align: left;
+        width: 100%;
+        transition:
+          background-color 120ms ease,
+          border-color 120ms ease,
+          box-shadow 120ms ease;
+      }
+      .item:hover {
+        border-color: var(--hover-border);
+        background: var(--hover-bg);
+        box-shadow: 0 0 0 2px color-mix(in srgb, var(--hover-border) 18%, transparent);
+      }
+      .icon {
+        width: 42px;
+        height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .icon svg {
+        width: 42px;
+        height: 42px;
+        display: block;
+      }
+      .name {
+        font-size: 12px;
+        word-break: break-word;
+        opacity: 0.9;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Search Icons</h1>
+      <input
+        id="q"
+        type="search"
+        placeholder="Type icon name, e.g. bell, user, weather..."
+        autofocus
+      />
+      <div class="toolbar">
+        <div class="mode-row">
+          <label><input type="radio" name="mode" value="both" checked /> Both</label>
+          <label><input type="radio" name="mode" value="outlined" /> Outlined</label>
+          <label><input type="radio" name="mode" value="filled" /> Filled</label>
+        </div>
+        <label><input type="checkbox" id="theme-toggle" /> Dark mode</label>
+      </div>
+      <div class="meta"><span id="count">0</span> icons shown</div>
+      <div id="grid" class="grid"></div>
+    </div>
+
+    <script>
+      const icons = "<INJECT>";
+      const allIcons = JSON.parse(icons);
+      const input = document.getElementById("q");
+      const grid = document.getElementById("grid");
+      const count = document.getElementById("count");
+      const themeToggle = document.getElementById("theme-toggle");
+
+      function passesMode(name, mode) {
+        const filled = name.includes("-filled");
+        if (mode === "filled") return filled;
+        if (mode === "outlined") return !filled;
+        return true;
+      }
+
+      async function copyText(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+          return;
+        }
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+      }
+
+      function render() {
+        const q = input.value.trim().toLowerCase();
+        const mode = document.querySelector('input[name="mode"]:checked').value;
+
+        const filtered = allIcons.filter((icon) => {
+          if (q && !icon.name.includes(q)) return false;
+          return passesMode(icon.name, mode);
+        });
+
+        count.textContent = String(filtered.length);
+        grid.innerHTML = filtered
+          .map(
+            (icon) => `
+              <button class="item" type="button" data-name="${icon.name}">
+                <span class="icon">${icon.svg}</span>
+                <div class="name">${icon.name}</div>
+              </button>
+            `,
+          )
+          .join("");
+      }
+
+      input.addEventListener("input", render);
+      document.querySelectorAll('input[name="mode"]').forEach((el) => {
+        el.addEventListener("change", render);
+      });
+      themeToggle.addEventListener("change", () => {
+        document.body.dataset.theme = themeToggle.checked ? "dark" : "light";
+      });
+      grid.addEventListener("click", async (event) => {
+        if (!(event.target instanceof Element)) return;
+        const card = event.target.closest(".item");
+        if (!card) return;
+        const name = card.getAttribute("data-name");
+        if (!name) return;
+        await copyText(name);
+      });
+
+      render();
+    </script>
+  </body>
+</html>

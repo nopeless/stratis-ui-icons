@@ -15,6 +15,15 @@ const filenameTransform = {
 } as Record<string, string>;
 
 const sourceMap = new Map<string, string>();
+const generatedIcons: Array<{ name: string; svg: string }> = [];
+
+function normalizeSvgColor(svgText: string): string {
+  // Some upstream icons hardcode black, which breaks dark-mode previews.
+  return svgText.replace(
+    /\b(fill|stroke)\s*=\s*(['"])\s*(#000000|#000|black)\s*\2/gi,
+    '$1="currentColor"',
+  );
+}
 
 rmSync("icons", { recursive: true, force: true });
 mkdirSync("icons");
@@ -54,6 +63,7 @@ for (const dir of await readdir("vendor/svg-icons")) {
     } else if (filename.endsWith("-filled")) {
       tag = "-filled";
     }
+
     filename = filename.replace(/-(outline|filled)$/g, "");
 
     const source = Bun.file(`vendor/svg-icons/${dir}/${file}`);
@@ -90,7 +100,24 @@ for (const dir of await readdir("vendor/svg-icons")) {
     }
 
     sourceMap.set(destfilename, `${dir}/${file}`);
+    const sourceText = await source.text();
+    const normalizedSvg = normalizeSvgColor(sourceText);
 
-    await Bun.write(dest, source);
+    generatedIcons.push({
+      name: destfilename.replace(/\.svg$/, ""),
+      svg: normalizedSvg,
+    });
+
+    await Bun.write(dest, sourceText);
   }
 }
+
+generatedIcons.sort((a, b) => a.name.localeCompare(b.name));
+
+const iconJsonString = JSON.stringify(generatedIcons).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+
+const htmlTemplate = await Bun.file("scripts/icons-search.template.html").text();
+const html = htmlTemplate.replace("<INJECT>", iconJsonString);
+
+await Bun.write("icons-search.html", html);
+console.log(`Generated icons/${generatedIcons.length} SVGs + icons-search.html`);
