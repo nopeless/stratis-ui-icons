@@ -10,6 +10,8 @@ const dirnameTransform = {
   "travel-and-location": "travel",
 } as Record<string, string>;
 
+const skipDirs = ["crypto", "flags-rectangle", "flags-round"];
+
 const filenameTransform = {
   "-": "delete",
 } as Record<string, string>;
@@ -30,6 +32,8 @@ async function generateIcons(): Promise<number> {
   let generatedCount = 0;
 
   for (const dir of await readdir("vendor/svg-icons")) {
+    if (skipDirs.includes(dir)) continue;
+
     const rawPrefix = dir
       // remove tag
       .replace(/-(outline|filled)$/, "")
