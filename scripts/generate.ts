@@ -1,5 +1,7 @@
 import { mkdirSync, rmSync } from "node:fs";
 import { readdir } from "node:fs/promises";
+import { optimize } from "svgo";
+import svgoConfig from "../svgo.config";
 
 const dirnameTransform = {
   education: "edu",
@@ -115,7 +117,15 @@ async function generateIcons(): Promise<number> {
 }
 
 async function optimizeIcons(): Promise<void> {
-  await Bun.$`bunx svgo icons/ --quiet`;
+  for (const file of await readdir("icons")) {
+    if (!file.endsWith(".svg")) continue;
+
+    const path = `icons/${file}`;
+    const svg = await Bun.file(path).text();
+    const result = optimize(svg, { ...(svgoConfig as any), path });
+
+    await Bun.write(path, result.data);
+  }
 }
 
 async function generateHtml(): Promise<number> {
