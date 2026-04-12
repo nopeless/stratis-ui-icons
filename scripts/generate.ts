@@ -22,9 +22,23 @@ const sourceMap = new Map<string, string>();
 
 function normalizeSvgColor(svgText: string): string {
   // Some upstream icons hardcode black, which breaks dark-mode previews.
-  return svgText
-    .replace('fill="currentColor"', 'fill="none"')
-    .replace(/\b(fill|stroke)\s*=\s*(['"])\s*(#000000|#000|black)\s*\2/gi, '$1="currentColor"');
+  svgText = svgText.replace(/fill="(?:black|#000)"/g, 'fill="currentColor"');
+
+  // Optimize away fill=none
+  if (
+    svgText.includes("fill=", svgText.indexOf(">")) &&
+    svgText.indexOf('fill="none"') !== -1 &&
+    svgText.indexOf('fill="none"') < svgText.indexOf(">")
+  ) {
+    svgText = svgText.replace(/fill="none"/, "");
+  }
+
+  // correct fill="currentColor"
+  if (svgText.indexOf('fill="currentColor"') < svgText.indexOf(">")) {
+    svgText = svgText.replace('fill="currentColor"', 'fill="none"');
+  }
+
+  return svgText;
 }
 
 async function generateIcons(): Promise<number> {
