@@ -73,9 +73,9 @@ async function generateIcons(): Promise<number> {
 
       filename = filename
         .toLowerCase()
-        .replace(/^-+/g, "")
         .replace(/[^-a-z0-9]+/g, "-")
-        .replace(/-+/g, "-");
+        .replace(/-+/g, "-")
+        .replace(/^-|-$/g, "");
 
       if (filename.endsWith("-outline")) {
         tag = "";
