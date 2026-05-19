@@ -7,6 +7,7 @@ export default {
     "removeUselessStrokeAndFill",
     "removeDimensions",
     "reusePaths",
+    "convertTransform",
     {
       name: "preset-default",
       params: {
