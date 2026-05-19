@@ -1,3 +1,3 @@
 # Statis UI Icon
 
-https://nopeless.github.io/statis-ui-icons/
+https://nopeless.github.io/stratis-ui-icons/
