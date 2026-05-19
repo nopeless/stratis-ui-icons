@@ -159,7 +159,7 @@ async function generateHtml(): Promise<number> {
   const htmlTemplate = await Bun.file("scripts/icons-search.template.html").text();
   const html = htmlTemplate.replace("<INJECT>", iconJsonString);
 
-  await Bun.write("icons-search.html", html);
+  await Bun.write("index.html", html);
   return generatedIcons.length;
 }
 
@@ -167,5 +167,5 @@ const generatedCount = await generateIcons();
 await optimizeIcons();
 const htmlIconCount = await generateHtml();
 console.log(
-  `Generated icons/${generatedCount} SVGs -> optimized with svgo -> icons-search.html (${htmlIconCount} icons)`,
+  `Generated icons/${generatedCount} SVGs -> optimized with svgo -> index.html (${htmlIconCount} icons)`,
 );
